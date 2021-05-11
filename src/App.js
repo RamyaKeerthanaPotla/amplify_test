@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { DataStore } from '@aws-amplify/datastore';
+import { Blog } from './models/';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const handleCreateAuthor = async () => {
+    return (
+      await DataStore.save(
+        new Blog({
+          "name": "Ramya",
+          "posts": []
+        })
+      )
+    );
+  }
+
+  const handleSearchAuthor = async () => {
+    const models = await DataStore.query(Blog);
+    return (
+      console.log(models)
+    );
+}
+return (
+  <div className="App">
+    <h1>Hello World</h1>
+    <button onClick={handleCreateAuthor}>Create Author</button>
+    <button onClick={handleSearchAuthor}>Search Author</button>
+  </div>
+);
 }
 
 export default App;
